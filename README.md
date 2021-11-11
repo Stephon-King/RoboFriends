@@ -4,3 +4,6 @@
 
 ## My First Try At React
 
+With this webapp we can search an array of robots (users) who are beautifully listed within a single page application.
+
+Yet to add the future updates like DB functionalitiy, but it's a start to new and great beginnings!
