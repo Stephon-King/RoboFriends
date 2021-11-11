@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+// import CardList from './CardList';  will be modifying this to app.js father of all our components
+import App from './containers/App';
+import 'tachyons';
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+
+    <div>
+  {/* <CardList robots={robots}/> changed this to App*/} 
+  <App />
+  </div>
+   
+ 
   </React.StrictMode>,
   document.getElementById('root')
 );
