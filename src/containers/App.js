@@ -1,53 +1,48 @@
-import React, { Component } from "react";
+import React, {useState, useEffect } from "react";
 import CardList from "../components/CardList";
-import { robots } from "../robots";
 import { SearchBox } from "../components/SearchBox";
 import Scroll from '../components/Scroll'
 import './App.css';
 
 
 
-class App extends Component {
+function App (){
     
-    constructor() {
-        super()
-        this.state={
-            robots: robots,
-            searchfield: '' //this.setState state updates this searchfield
-        }
-    }
+    // constructor() {
+    //     super()
+    //     this.state={
+    //         robots: robots,
+    //         searchfield: '' //this.setState state updates this searchfield
+    //     }
+    // }
+
+    const [robots, setRobots] = useState([])
+    const [searchfield, setSearchfield] = useState('');
 
         //without = && => this won't work
         //always include it 
-    onSearchChange = (event) => {
+    const onSearchChange = (event) => {
         //everytime the input changes we get 
         // an event
-        this.setState({searchfield: event.target.value }) //used everytime we want to set the state (this.setState() method)
+        setSearchfield(event.target.value) //used everytime we want to set the state (this.setState() method)
         //that setState ensures that the searchfield always gets updated
    
     }
 
-    render() {
-        const{robots, searchfield} = this.state;
-
-        const filteredRobots = robots.filter(robots =>{
-            return robots.name.toLowerCase().includes(searchfield.toLowerCase()); 
+   
+        const filteredRobots = robots.filter(robot =>{
+            return robot.name.toLowerCase().includes(searchfield.toLowerCase()); 
         })
 
-        if (this.state.robots.length === 0){
-            return <h1 className="tc f1">Loading</h1>
-        }else{
-
-                return(
+      return !robots.length ?
+            <h1 className="tc f1">Loading</h1> :
+            
+            (
                     <div className ='tc' > 
                     
                     <h1 className="tc f1">RoboFriends</h1>
                     
-                    <SearchBox searchChange ={this.onSearchChange}/>
-
-                    {/* <CardList robots ={robots} /> old code before search functionality added */}
-
-
+                    <SearchBox searchChange ={onSearchChange}/>                  
                     <Scroll>
                     <CardList robots ={filteredRobots} />
                     </Scroll>
@@ -57,7 +52,7 @@ class App extends Component {
 
         }
             
-    }
-}
+    
+
 
 export default App;
