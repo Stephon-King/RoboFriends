@@ -2,6 +2,7 @@ import React, {useState, useEffect } from "react";
 import CardList from "../components/CardList";
 import SearchBox  from "../components/SearchBox";
 import Scroll from '../components/Scroll'
+import 'react-loading-skeleton/dist/skeleton.css'
 import './App.css';
 
 
@@ -24,13 +25,26 @@ function App (){
     //the next part is to hook into 
 
     useEffect(() => {
-        
-        fetch('https://jsonplaceholder.ypicode.com/users')
+       /*
+            fetch('https://jsonplaceholder.typicode.com/users')
             .then(response => response.json())
             
             .then(users => { setRobots(users) })
 
-            .catch(onRejected => console.log(onRejected))
+                .catch(onRejected => console.log(onRejected))*/
+        
+        const myAsyncFunction = async () => {
+            try {
+                const apiResponse = await fetch('https://jsonplaceholder.ypicode.com/users')
+            const users = await apiResponse.json();
+            setRobots(users);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        
+        
+        myAsyncFunction();
     }, []);
 
         
@@ -51,10 +65,10 @@ function App (){
         })
             // console.log(robots,searchfield);
 
-      return !robots.length ?
-            <h1 className="tc f1">Loading</h1> :
+    return !robots.length ?
+        <h1 className="tc f1">Loading</h1>:
             
-            (
+                (
                     <div className ='tc' > 
                     
                     <h1 className="tc f1">RoboFriends</h1>
