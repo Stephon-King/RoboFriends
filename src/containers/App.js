@@ -1,6 +1,6 @@
 import React, {useState, useEffect } from "react";
 import CardList from "../components/CardList";
-import { SearchBox } from "../components/SearchBox";
+import SearchBox  from "../components/SearchBox";
 import Scroll from '../components/Scroll'
 import './App.css';
 
@@ -11,28 +11,45 @@ function App (){
     // constructor() {
     //     super()
     //     this.state={
-    //         robots: robots,
+    //         robots: [],
     //         searchfield: '' //this.setState state updates this searchfield
     //     }
     // }
 
-    const [robots, setRobots] = useState([])
+    const [robots, setRobots] = useState([]) 
     const [searchfield, setSearchfield] = useState('');
+    //hooks is  function that lets u hook into a react feature
+    //
 
-        //without = && => this won't work
-        //always include it 
-    const onSearchChange = (event) => {
-        //everytime the input changes we get 
-        // an event
-        setSearchfield(event.target.value) //used everytime we want to set the state (this.setState() method)
-        //that setState ensures that the searchfield always gets updated
+    //the next part is to hook into 
+
+    useEffect(() => {
+        
+        fetch('https://jsonplaceholder.ypicode.com/users')
+            .then(response => response.json())
+            
+            .then(users => { setRobots(users) })
+
+            .catch(onRejected => console.log(onRejected))
+    }, []);
+
+        
+    const onSearchChange =(event) => {
+        // This Is The Function That Modifies The SearchBox Component's State.
+        setSearchfield(event.target.value) 
    
     }
 
    
-        const filteredRobots = robots.filter(robot =>{
-            return robot.name.toLowerCase().includes(searchfield.toLowerCase()); 
+    const filteredRobots =
+        robots.filter(robot => {
+            return robot.name
+                .toLowerCase()
+                .includes(
+                    searchfield.toLowerCase()
+                );
         })
+            // console.log(robots,searchfield);
 
       return !robots.length ?
             <h1 className="tc f1">Loading</h1> :
