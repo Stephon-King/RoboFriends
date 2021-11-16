@@ -1,89 +1,52 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CardList from "../components/CardList";
-import SearchBox  from "../components/SearchBox";
-import Scroll from '../components/Scroll'
-import 'react-loading-skeleton/dist/skeleton.css'
-import './App.css';
+import SearchBox from "../components/SearchBox";
+import Scroll from "../components/Scroll";
+import "react-loading-skeleton/dist/skeleton.css";
+import "./App.css";
 
+function App() {
+  const [robots, setRobots] = useState([]);
+  const [searchfield, setSearchfield] = useState("");
 
+  useEffect(() => {
+    const myAsyncFunction = async () => {
+      try {
+        const apiResponse = await fetch(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        const users = await apiResponse.json();
+        setRobots(users);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-function App (){
-    
-    // constructor() {
-    //     super()
-    //     this.state={
-    //         robots: [],
-    //         searchfield: '' //this.setState state updates this searchfield
-    //     }
-    // }
+    myAsyncFunction();
+  }, []);
 
-    const [robots, setRobots] = useState([]) 
-    const [searchfield, setSearchfield] = useState('');
-    //hooks is  function that lets u hook into a react feature
-    //
+  const onSearchChange = (event) => {
+    // This Is The Function That Modifies The SearchBox Component's State.
+    setSearchfield(event.target.value);
+  };
 
-    //the next part is to hook into 
+  const filteredRobots = robots.filter((robot) => {
+    return robot.name.toLowerCase().includes(searchfield.toLowerCase());
+  });
+  // console.log(robots,searchfield);
 
-    useEffect(() => {
-       /*
-            fetch('https://jsonplaceholder.typicode.com/users')
-            .then(response => response.json())
-            
-            .then(users => { setRobots(users) })
+  return !robots.length ? (
+    <h1 className="tc f1">Loading</h1>
+  ) : (
+    <div className="tc">
+      <h1 className="tc f1">RoboFriends</h1>
 
-                .catch(onRejected => console.log(onRejected))*/
-        
-        const myAsyncFunction = async () => {
-            try {
-                const apiResponse = await fetch('https://jsonplaceholder.ypicode.com/users')
-            const users = await apiResponse.json();
-            setRobots(users);
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        
-        
-        myAsyncFunction();
-    }, []);
-
-        
-    const onSearchChange =(event) => {
-        // This Is The Function That Modifies The SearchBox Component's State.
-        setSearchfield(event.target.value) 
-   
-    }
-
-   
-    const filteredRobots =
-        robots.filter(robot => {
-            return robot.name
-                .toLowerCase()
-                .includes(
-                    searchfield.toLowerCase()
-                );
-        })
-            // console.log(robots,searchfield);
-
-    return !robots.length ?
-        <h1 className="tc f1">Loading</h1>:
-            
-                (
-                    <div className ='tc' > 
-                    
-                    <h1 className="tc f1">RoboFriends</h1>
-                    
-                    <SearchBox searchChange ={onSearchChange}/>                  
-                    <Scroll>
-                    <CardList robots ={filteredRobots} />
-                    </Scroll>
-            
-                    </div>
-                );
-
-        }
-            
-    
-
+      <SearchBox searchChange={onSearchChange} />
+      <Scroll>
+        <CardList robots={filteredRobots} />
+      </Scroll>
+    </div>
+  );
+}
 
 export default App;
