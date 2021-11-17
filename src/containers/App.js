@@ -17,8 +17,8 @@ function App() {
         );
         const users = await apiResponse.json();
         setRobots(users);
-      } catch (error) {
-        console.log(error);
+      } catch (rejectResponse) {
+        console.log(rejectResponse);
       }
     };
 
@@ -33,7 +33,7 @@ function App() {
   const filteredRobots = robots.filter((robot) => {
     return robot.name.toLowerCase().includes(searchfield.toLowerCase());
   });
-  // console.log(robots,searchfield);
+
 
   return !robots.length ? (
     <h1 className="tc f1">Loading</h1>
